@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Scheduler Demo</title>
+	<script>
+		(function(){
+			window.addEventListener("DOMContentLoaded", init);
+			var divMessages = null;
+
+			function init(){
+				var btnDoWork = document.getElementById('btnDoWork');
+				btnDoWork.addEventListener('click',onBtnDoWorkClick);
+
+				divMessages = document.getElementById('divMessages');
+			}
+
+			function onBtnDoWorkClick(){
+				displayMessage('Work Started..!');
+				//triggerWork()
+				setTimeout(triggerWork);
+			}
+			function triggerWork(){
+				doWork(onWorkComplete, onWorkProgress);
+				
+			}
+			function onWorkComplete(){
+				displayMessage('Work Completed..!');
+			}
+			function onWorkProgress(percentCompleted){
+				document.getElementById("workProgress").value = percentCompleted;
+			}
+
+			function displayMessage(msg){
+				divMessages.innerHTML += msg + '<br/>';
+			}
+			function doWork(onComplete, onProgress){
+				var totalIterations = 1000,
+					currentIteration = 0;
+
+				function oneIteration(){
+
+					for(var i=0; i < (10000/totalIterations); i++)
+						for(var j=0; j < 10000; j++)
+							for(var k=0; k < 100; k++){
+
+							}
+
+					if (++currentIteration < totalIterations){
+						setTimeout(oneIteration);
+					} else {
+						console.log('Job done!!');
+						if (typeof onComplete === 'function')
+							onComplete();
+					}
+					if (typeof onProgress === 'function'){
+						var percentCompleted = (currentIteration/totalIterations) * 100;
+						onProgress(percentCompleted);
+					}
+				}
+
+				oneIteration();
+			}
+		})();
+	</script>
+</head>
+<body>
+	<input type="text" name="" id="">
+	<input type="button" value="Do Work" id="btnDoWork">
+	<div id="divMessages"></div>
+	<div>
+		<progress id="workProgress" min="0" max="100" value="0"></progress>
+	</div>
+</body>
+</html>
