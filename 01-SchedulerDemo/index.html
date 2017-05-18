@@ -18,12 +18,13 @@
 			function onBtnDoWorkClick(){
 				displayMessage('Work Started..!');
 				//triggerWork()
-				setTimeout(triggerWork);
+				//setTimeout(triggerWork);
+				doWork(onWorkComplete, onWorkProgress);
 			}
-			function triggerWork(){
+			/*function triggerWork(){
 				doWork(onWorkComplete, onWorkProgress);
 				
-			}
+			}*/
 			function onWorkComplete(){
 				displayMessage('Work Completed..!');
 			}
