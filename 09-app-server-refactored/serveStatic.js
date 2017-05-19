@@ -6,7 +6,7 @@ function isStatic(resource){
 	return staticResExtns.indexOf(path.extname(resource)) !== -1;
 }
 
-module.exports = function(req, res){
+module.exports = function(req, res, next){
 	if (isStatic(req.urlObj.pathname)){
 		var resource = path.join(__dirname, req.urlObj.pathname);
 		if (!fs.existsSync(resource)){	
@@ -26,6 +26,9 @@ module.exports = function(req, res){
 		});
 		stream.on('end', function(){
 			console.log('writing file to the response stream done');
+			next();
 		});
+	} else {
+		next();
 	}
 }
