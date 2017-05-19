@@ -6,20 +6,22 @@ function isStatic(resource){
 	return staticResExtns.indexOf(path.extname(resource)) !== -1;
 }
 
-module.exports = function(req, res, next){
-	if (isStatic(req.urlObj.pathname)){
-		var resource = path.join(__dirname, req.urlObj.pathname);
-		if (!fs.existsSync(resource)){	
-			res.statusCode = 404;
-			res.end();
-			return;
-		}
-		var stream = fs.createReadStream(resource);
-		stream.pipe(res);
-		stream.on('end', function(){
+module.exports = function ( resourcePath ){
+	return function(req, res, next){
+		if (isStatic(req.urlObj.pathname)){
+			var resource = path.join(resourcePath, req.urlObj.pathname);
+			if (!fs.existsSync(resource)){	
+				res.statusCode = 404;
+				res.end();
+				return;
+			}
+			var stream = fs.createReadStream(resource);
+			stream.pipe(res);
+			stream.on('end', function(){
+				next();
+			});
+		} else {
 			next();
-		});
-	} else {
-		next();
+		}
 	}
-}
+};
