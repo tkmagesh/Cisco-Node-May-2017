@@ -1,4 +1,5 @@
-var http = require('http');
+var http = require('http'),
+	app = require('./app');
 	
 
 var dataParser = require('./dataParser'),
@@ -6,19 +7,9 @@ var dataParser = require('./dataParser'),
 	calculatorHandler = require('./calculatorHandler'),
 	notFoundHandler = require('./notFoundHandler');
 
-var middlewares = [dataParser, serveStatic, calculatorHandler, notFoundHandler];
+app.use(dataParser);
+app.use(serveStatic);
+app.use(calculatorHandler);
+app.use(notFoundHandler);
 
-var server = http.createServer(function(req, res){
-	function exec(middlewares, req, res){
-		var first = middlewares[0],
-			remaining = middlewares.slice(1),
-			next = function(){
-				exec(remaining, req, res);
-			};
-		if (typeof first === 'function')
-			first(req, res, next);
-	}
-	exec(middlewares, req, res);
-});
-
-server.listen(8080);
+http.createServer(app).listen(8080);
