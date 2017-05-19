@@ -6,3 +6,10 @@ body {
 a {
   color: #00B7FF;
 }
+
+.completed{
+	color : red;
+	text-decoration: line-through;;
+	font-style: italic;
+	
+}

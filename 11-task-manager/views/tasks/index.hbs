@@ -1,0 +1,13 @@
+
+<h2>Task Manager</h2>
+<hr/>
+<a href="/tasks/new">Create New</a>
+<ol>	
+{{#each list}}
+	{{#if isCompleted}}
+		<li class="completed">{{this.name}}</li>
+	{{else}}
+		<li>{{this.name}}</li>
+	{{/if}}
+{{/each}}
+</ol>
